@@ -4,6 +4,8 @@ This project is a simple Product Management System built using Node.js and Vanil
 allowing users to add, view, update, and delete products through a web interface.
 The data is stored in a JSON file, providing a straightforward approach to managing product information.
 
+Technologies Used:
+
 Node.js: For creating the server and handling HTTP requests.
 
 HTML/CSS: For building the user interface and styling the application

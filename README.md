@@ -8,8 +8,8 @@ Technologies Used:
 
 Node.js: For creating the server and handling HTTP requests.
 
-HTML/CSS: For building the user interface and styling the application
-.
+HTML/CSS: For building the user interface and styling the application.
+
 JavaScript: For dynamic functionality, including form submissions, product filtering, and updating the product list without refreshing the page.
 
 JSON: For storing product data persistently in a file.

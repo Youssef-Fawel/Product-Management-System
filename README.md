@@ -1,4 +1,4 @@
-Product Management System
+Product Management System:
 
 This project is a simple Product Management System built using Node.js and Vanilla JavaScript,
 allowing users to add, view, update, and delete products through a web interface.

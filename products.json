@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "T-shirt cool",
+    "price": 26.99,
+    "description": "T-shirt en coton bio",
+    "brand": "EcoWear"
+  },
+  {
+    "id": 2,
+    "name": "Smartphone X-200",
+    "price": 499.99,
+    "description": "Écran 6.1\" Full HD, 64Go\t",
+    "brand": "TechPro"
+  },
+  {
+    "id": 3,
+    "name": "Casque Bluetooth\t",
+    "price": 89.9,
+    "description": "Autonomie 20h, réduction de bruit\t",
+    "brand": "SoundMax"
+  },
+  {
+    "id": 4,
+    "name": "Tablette Q-Pad\t",
+    "price": 329,
+    "description": "10.2",
+    "brand": "QuickTab"
+  },
+  {
+    "id": 5,
+    "name": "Chaussures running\t",
+    "price": 75,
+    "description": "Chaussures de running légères",
+    "brand": "SpeedRun"
+  },
+  {
+    "id": 6,
+    "name": "Sac à dos de voyage",
+    "price": 59.99,
+    "description": "Résistant à l'eau, 30L",
+    "brand": "TravelPro"
+  }
+]

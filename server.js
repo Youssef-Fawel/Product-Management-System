@@ -227,7 +227,7 @@ input[type="submit"]:hover {
 }
 
 #toggle-dark-mode:hover {
-    background-color: #0056b3; 
+    background-color: #303337; 
     transform: scale(1.05); 
 }
 

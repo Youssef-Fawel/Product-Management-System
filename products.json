@@ -1,53 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "T-shirt cool",
-    "price": 26.99,
-    "description": "T-shirt en coton bio",
-    "brand": "EcoWear",
-    "category": "Clothing"
-  },
-  {
-    "id": 2,
-    "name": "Smartphone X-200",
-    "price": 499.99,
-    "description": "Écran 6.1\" Full HD, 64Go\t",
-    "brand": "TechPro",
-    "category": "Electronics"
-  },
-  {
-    "id": 3,
-    "name": "Casque Bluetooth\t",
-    "price": 89.9,
-    "description": "Autonomie 20h, réduction de bruit\t",
-    "brand": "SoundMax",
-    "category": "Electronics"
-  },
-  {
-    "id": 4,
-    "name": "Tablette Q-Pad\t",
-    "price": 329,
-    "description": "10.2",
-    "brand": "QuickTab",
-    "category": "Electronics"
-  },
-  {
-    "id": 5,
-    "name": "Chaussures running\t",
-    "price": 75,
-    "description": "Chaussures de running légères",
-    "brand": "SpeedRun",
-    "category": "Clothing"
-  },
-  {
-    "id": 6,
-    "name": "Sac à dos de voyage",
-    "price": 59.99,
-    "description": "Résistant à l'eau, 30L",
-    "brand": "TravelPro",
-    "category": "Clothing"
-  },
-  {
     "name": "Père Riche, Père Pauvre",
     "price": 32.99,
     "description": "Kiyosaki Les leçons essentielles pour créer de la richesse et comprendre les véritables principes de l'argent et de l'investissement",
@@ -110,5 +62,53 @@
     "brand": "ModernHome ",
     "category": "Home",
     "id": 1729798970306
+  },
+  {
+    "name": "T-shirt cool",
+    "price": 26.99,
+    "description": "T-shirt en coton bio",
+    "brand": "EcoWear",
+    "category": "Clothing",
+    "id": 1729799302534
+  },
+  {
+    "name": "Chaussures running",
+    "price": 75,
+    "description": "Chaussures de running légères",
+    "brand": "SpeedRun",
+    "category": "Clothing",
+    "id": 1729799341157
+  },
+  {
+    "name": "Sac à dos de voyage",
+    "price": 59.99,
+    "description": "Résistant à l'eau, 30L",
+    "brand": "TravelPro",
+    "category": "Clothing",
+    "id": 1729799389054
+  },
+  {
+    "name": "Smartphone X-200",
+    "price": 499.99,
+    "description": "Écran 6.1\" Full HD, 64Go",
+    "brand": "TechPro",
+    "category": "Electronics",
+    "id": 1729799446167
+  },
+  {
+    "name": "Casque Bluetooth",
+    "price": 89.9,
+    "description": "Autonomie 20h, réduction de bruit",
+    "brand": "SoundMax",
+    "category": "Electronics",
+    "id": 1729799506357
+  },
+  {
+    "name": "Tablette Q-Pad",
+    "price": 329,
+    "description": "10.2",
+    "brand": "QuickTab",
+    "category": "Electronics",
+    "id": 1729799548084
   }
 ]

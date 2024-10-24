@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Produits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --gradient-primary: linear-gradient(135deg, #007BFF, #0056b3);
+            --gradient-success: linear-gradient(135deg, #28a745, #20c997);
+            --shadow-color: rgba(0, 123, 255, 0.3);
+            --bg-color: linear-gradient(135deg, #f6f8fd 0%, #e9f0f8 100%);
+            --container-bg: #ffffff;
+            --text-color: #2c3e50;
+            --input-bg: #f8fafc;
+            --border-color: #e1e8ed;
+            --table-header-bg: #f8f9fa;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            --container-bg: #333333;
+            --text-color: #ffffff;
+            --input-bg: #444444;
+            --border-color: #555555;
+            --table-header-bg: #2c2c2c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            padding: 40px 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 35px;
+            font-size: 32px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+        }
+
+        .product-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        input, select, button {
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 15px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        button {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px var(--shadow-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            color: var(--text-color);
+        }
+
+        th {
+            background: var(--table-header-bg);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        tr {
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            transform: translateX(5px);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .edit-btn {
+            background: var(--gradient-success);
+        }
+
+        .delete-btn {
+            background: var(--danger-color);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .pagination button {
+            padding: 12px 20px;
+            border-radius: 12px;
+        }
+
+        .pagination button:disabled {
+            background: var(--border-color);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .edit-form {
+    display: grid;
+    gap: 15px;
+    padding: 25px;
+    background: var(--input-bg);
+    border-radius: 12px;
+    margin: 10px 0;
+    width: 95%;  
+    margin-right: auto;  
+}
+
+        .edit-form input,
+        .edit-form textarea,
+        .edit-form select {
+            width: 100%;
+            padding: 16px;
+            width: 98%;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 15px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .edit-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .edit-form .button-group {
+            display: inline-flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .edit-form .button-group button {
+            width: auto;
+            padding: 8px 16px;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .edit-form .button-group button[type="submit"] {
+    background: var(--gradient-success);
+}
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .product-controls {
+                flex-direction: column;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+        <h1>Gestion des Produits</h1>
+        
+        <div class="product-controls">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Rechercher...">
+                <select id="categoryFilter">
+                    <option value="">Toutes les catégories</option>
+                    <option value="Electronics">Électronique</option>
+                    <option value="Clothing">Vêtements</option>
+                    <option value="Books">Livres</option>
+                    <option value="Home">Maison</option>
+                </select>
+                <button onclick="applyFilters()">Filtrer</button>
+            </div>
+            <button onclick="location.href='/'">Ajouter un produit</button>
+        </div>
+
+        <table id="productsTable">
+            <thead>
+                <tr>
+                    <th onclick="sortProducts('name')">Nom</th>
+                    <th onclick="sortProducts('price')">Prix</th>
+                    <th onclick="sortProducts('brand')">Marque</th>
+                    <th>Description</th>
+                    <th onclick="sortProducts('category')">Catégorie</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="productsBody"></tbody>
+        </table>
+
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <script>
+        let products = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let sortField = 'name';
+        let sortDirection = 'asc';
+
+        async function fetchProducts() {
+            try {
+                const response = await fetch('/api/products');
+                const data = await response.json();
+                products = data;
+                displayProducts();
+            } catch (error) {
+                console.log('Error fetching products:', error);
+            }
+        }
+
+        function displayProducts() {
+            const tbody = document.getElementById('productsBody');
+            tbody.innerHTML = '';
+
+            const filtered = filterProducts();
+            const sorted = sortProductsList(filtered);
+            const paginated = paginateProducts(sorted);
+
+            paginated.forEach(product => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.price}€</td>
+                    <td>${product.brand}</td>
+                    <td>${product.description}</td>
+                    <td>${product.category}</td>
+                    <td class="action-buttons">
+                        <button class="edit-btn" onclick="showEditForm(${product.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-btn" onclick="deleteProduct(${product.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updatePagination(filtered.length);
+        }
+
+        function filterProducts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+
+            return products.filter(product => {
+                const matchesSearch = 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.brand.toLowerCase().includes(searchTerm) ||
+                    product.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = !category || product.category === category;
+                return matchesSearch && matchesCategory;
+            });
+        }
+
+        function sortProductsList(productsList) {
+            return [...productsList].sort((a, b) => {
+                let valueA = a[sortField];
+                let valueB = b[sortField];
+                
+                if (typeof valueA === 'string') valueA = valueA.toLowerCase();
+                if (typeof valueB === 'string') valueB = valueB.toLowerCase();
+                
+                if (valueA < valueB) return sortDirection === 'asc' ? -1 : 1;
+                if (valueA > valueB) return sortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        function sortProducts(field) {
+            if (field === sortField) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortField = field;
+                sortDirection = 'asc';
+            }
+            displayProducts();
+        }
+
+        function paginateProducts(products) {
+            const start = (currentPage - 1) * itemsPerPage;
+            return products.slice(start, start + itemsPerPage);
+        }
+
+        function updatePagination(totalItems) {
+            const pagination = document.getElementById('pagination');
+            const pageCount = Math.ceil(totalItems / itemsPerPage);
+            
+            pagination.innerHTML = '';
+            
+            if (pageCount > 1) {
+                for (let i = 1; i <= pageCount; i++) {
+                    const button = document.createElement('button');
+                    button.textContent = i;
+                    button.onclick = () => {
+                        currentPage = i;
+                        displayProducts();
+                    };
+                    if (i === currentPage) {
+                        button.disabled = true;
+                    }
+                    pagination.appendChild(button);
+                }
+            }
+        }
+
+        function showEditForm(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            const tr = event.target.closest('tr');
+            const editForm = document.createElement('tr');
+            editForm.innerHTML = `
+                <td colspan="6">
+                    <form onsubmit="updateProduct(event, ${id})" class="edit-form active">
+                        <input type="text" name="name" value="${product.name}" required>
+                        <input type="number" name="price" value="${product.price}" step="0.01" required>
+                        <input type="text" name="brand" value="${product.brand}" required>
+                        <textarea name="description" required>${product.description}</textarea>
+                        <select name="category" required>
+                            <option value="Electronics" ${product.category === 'Electronics' ? 'selected' : ''}>Électronique</option>
+                            <option value="Clothing" ${product.category === 'Clothing' ? 'selected' : ''}>Vêtements</option>
+                            <option value="Books" ${product.category === 'Books' ? 'selected' : ''}>Livres</option>
+                            <option value="Home" ${product.category === 'Home' ? 'selected' : ''}>Maison</option>
+                        </select>
+                        <div class="button-group">                            <button type="submit">Mettre à jour</button>
+                            <button type="button" onclick="displayProducts()">Annuler</button>
+                        </div>
+                    </form>
+                </td>
+            `;
+            tr.parentNode.insertBefore(editForm, tr.nextSibling);
+            tr.style.display = 'none';
+        }
+
+        async function updateProduct(event, id) {
+            event.preventDefault();
+            const form = event.target;
+            const updatedProduct = {
+                id: id,
+                name: form.name.value,
+                price: parseFloat(form.price.value),
+                brand: form.brand.value,
+                description: form.description.value,
+                category: form.category.value
+            };
+
+            try {
+                const response = await fetch(`/api/products/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedProduct)
+                });
+                
+                if (response.ok) {
+                    await fetchProducts();
+                }
+            } catch (error) {
+                console.log('Error updating product:', error);
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            try {
+                const response = await fetch(`/api/products/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    await fetchProducts();
+                }
+            } catch (error) {
+                console.log('Error deleting product:', error);
+            }
+        }
+
+        function applyFilters() {
+            currentPage = 1;
+            displayProducts();
+        }
+
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.setAttribute('data-theme', 
+                document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+            );
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        fetchProducts();
+    </script>
+</body>
+</html>

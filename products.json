@@ -4,41 +4,95 @@
     "name": "T-shirt cool",
     "price": 26.99,
     "description": "T-shirt en coton bio",
-    "brand": "EcoWear"
+    "brand": "EcoWear",
+    "category": "Clothing"
   },
   {
     "id": 2,
     "name": "Smartphone X-200",
     "price": 499.99,
     "description": "Écran 6.1\" Full HD, 64Go\t",
-    "brand": "TechPro"
+    "brand": "TechPro",
+    "category": "Electronics"
   },
   {
     "id": 3,
     "name": "Casque Bluetooth\t",
     "price": 89.9,
     "description": "Autonomie 20h, réduction de bruit\t",
-    "brand": "SoundMax"
+    "brand": "SoundMax",
+    "category": "Electronics"
   },
   {
     "id": 4,
     "name": "Tablette Q-Pad\t",
     "price": 329,
     "description": "10.2",
-    "brand": "QuickTab"
+    "brand": "QuickTab",
+    "category": "Electronics"
   },
   {
     "id": 5,
     "name": "Chaussures running\t",
     "price": 75,
     "description": "Chaussures de running légères",
-    "brand": "SpeedRun"
+    "brand": "SpeedRun",
+    "category": "Clothing"
   },
   {
     "id": 6,
     "name": "Sac à dos de voyage",
     "price": 59.99,
     "description": "Résistant à l'eau, 30L",
-    "brand": "TravelPro"
+    "brand": "TravelPro",
+    "category": "Clothing"
+  },
+  {
+    "name": "The Midnight Library",
+    "price": 19.99,
+    "description": "Bestselling novel about infinite possibilities and second chances",
+    "brand": "Matt Haig",
+    "category": "Books",
+    "id": 1729794658473
+  },
+  {
+    "name": "Atomic Habits",
+    "price": 24.99,
+    "description": "Revolutionary guide to building good habits and breaking bad ones",
+    "brand": "James Clear",
+    "category": "Books",
+    "id": 1729794684116
+  },
+  {
+    "name": "Dune ",
+    "price": 29.99,
+    "description": "Science fiction masterpiece with deluxe hardcover edition",
+    "brand": "Frank Herbert",
+    "category": "Books",
+    "id": 1729794706049
+  },
+  {
+    "name": "KitchenAid Stand Mixer",
+    "price": 499,
+    "description": "Professional-grade mixer with 10 speeds and 5-quart capacity",
+    "brand": "KitchenAid ",
+    "category": "Home",
+    "id": 1729794731164
+  },
+  {
+    "name": "Dyson Air Purifier",
+    "price": 399,
+    "description": "Smart air purifier with HEPA filter and air quality monitoring",
+    "brand": "Dyson ",
+    "category": "Home",
+    "id": 1729794758894
+  },
+  {
+    "name": "Le Creuset Dutch Oven",
+    "price": 299,
+    "description": "Premium enameled cast iron cookware for perfect slow cooking",
+    "brand": "Le Creuset",
+    "category": "Home",
+    "id": 1729794782891
   }
 ]

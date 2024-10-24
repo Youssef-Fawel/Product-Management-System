@@ -1,15 +1,38 @@
-Product Management System:
+Product Management System
+A robust and modern Product Management System featuring a sleek user interface with dark mode support. This application provides comprehensive CRUD operations for efficient product management, complete with advanced filtering, sorting, and pagination capabilities.
 
-This project is a simple Product Management System built using Node.js and Vanilla JavaScript,
-allowing users to add, view, update, and delete products through a web interface.
-The data is stored in a JSON file, providing a straightforward approach to managing product information.
+Key Features
+✨ Modern, responsive UI with Dark/Light mode
+📱 Mobile-friendly design
+🔍 Real-time search and filtering
+⚡ Dynamic sorting for all product fields
+📄 Smart pagination system
+✏️ Inline editing capabilities
+🎨 Smooth animations and transitions
+Technologies Used
+Frontend:
 
-Technologies Used:
+Vanilla JavaScript (ES6+)
+Modern CSS3 with Flexbox/Grid
+Responsive Design
+FontAwesome Icons
+Backend:
 
-Node.js: For creating the server and handling HTTP requests.
-
-HTML/CSS: For building the user interface and styling the application.
-
-JavaScript: For dynamic functionality, including form submissions, product filtering, and updating the product list without refreshing the page.
-
-JSON: For storing product data persistently in a file.
+Node.js
+RESTful API architecture
+JSON-based data persistence
+Core Functionalities
+Product Creation with validation
+Real-time Search and Filtering
+Dynamic Table Sorting
+Inline Product Updates
+Secure Product Deletion
+Smart Pagination
+Theme Switching (Dark/Light mode)
+Performance Features
+Optimized DOM manipulation
+Efficient data filtering
+Smooth animations
+Responsive layout
+Clean, maintainable code structure
+This system demonstrates modern web development practices while maintaining simplicity and efficiency in product management operations.

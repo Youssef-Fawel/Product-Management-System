@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "name": "T-shirt cool",
     "price": 26.99,
     "description": "T-shirt en coton bio",
@@ -7,6 +8,7 @@
     "category": "Clothing"
   },
   {
+    "id": 2,
     "name": "Smartphone X-200",
     "price": 499.99,
     "description": "Écran 6.1\" Full HD, 64Go\t",
@@ -14,6 +16,7 @@
     "category": "Electronics"
   },
   {
+    "id": 3,
     "name": "Casque Bluetooth\t",
     "price": 89.9,
     "description": "Autonomie 20h, réduction de bruit\t",
@@ -21,6 +24,7 @@
     "category": "Electronics"
   },
   {
+    "id": 4,
     "name": "Tablette Q-Pad\t",
     "price": 329,
     "description": "10.2",
@@ -28,6 +32,7 @@
     "category": "Electronics"
   },
   {
+    "id": 5,
     "name": "Chaussures running\t",
     "price": 75,
     "description": "Chaussures de running légères",
@@ -35,6 +40,7 @@
     "category": "Clothing"
   },
   {
+    "id": 6,
     "name": "Sac à dos de voyage",
     "price": 59.99,
     "description": "Résistant à l'eau, 30L",
@@ -42,51 +48,67 @@
     "category": "Clothing"
   },
   {
-    "name": "The Midnight Library",
-    "price": 19.99,
-    "description": "Bestselling novel about infinite possibilities and second chances",
-    "brand": "Matt Haig",
+    "name": "Père Riche, Père Pauvre",
+    "price": 32.99,
+    "description": "Kiyosaki Les leçons essentielles pour créer de la richesse et comprendre les véritables principes de l'argent et de l'investissement",
+    "brand": "Robert T.",
     "category": "Books",
     "id": 1729794658473
   },
   {
-    "name": "Atomic Habits",
-    "price": 24.99,
-    "description": "Revolutionary guide to building good habits and breaking bad ones",
-    "brand": "James Clear",
+    "name": "L'Art Subtil de s'en Foutre",
+    "price": 29.99,
+    "description": "Mark Manson Une approche disruptive pour vivre une vie meilleure en cessant de positiver à tout prix et en acceptant nos limites",
+    "brand": "Mark Manson",
     "category": "Books",
     "id": 1729794684116
   },
   {
-    "name": "Dune ",
-    "price": 29.99,
-    "description": "Science fiction masterpiece with deluxe hardcover edition",
-    "brand": "Frank Herbert",
+    "name": "Le Pouvoir du Moment Présent",
+    "price": 27.5,
+    "description": "Guide spirituel puissant pour vivre pleinement l'instant présent et trouver le véritable sens de la vie",
+    "brand": "Eckhart Tolle",
     "category": "Books",
     "id": 1729794706049
   },
   {
-    "name": "KitchenAid Stand Mixer",
-    "price": 499,
-    "description": "Professional-grade mixer with 10 speeds and 5-quart capacity",
-    "brand": "KitchenAid ",
+    "name": "Lampe Nordic Design",
+    "price": 79.99,
+    "description": "Pied en bois naturel, abat-jour textile blanc, hauteur réglable Éclairage",
+    "brand": "LumiStyle",
     "category": "Home",
     "id": 1729794731164
   },
   {
-    "name": "Dyson Air Purifier",
-    "price": 399,
-    "description": "Smart air purifier with HEPA filter and air quality monitoring",
-    "brand": "Dyson ",
+    "name": "Canapé Confort Plus",
+    "price": 599.99,
+    "description": "Velours premium 3 places, coussins déhoussables, coloris gris anthracite Mobilier",
+    "brand": "Maison Elite",
     "category": "Home",
     "id": 1729794758894
   },
   {
-    "name": "Le Creuset Dutch Oven",
-    "price": 299,
-    "description": "Premium enameled cast iron cookware for perfect slow cooking",
-    "brand": "Le Creuset",
+    "name": "Robot Multifonction Pro",
+    "price": 299.99,
+    "description": "1200W, 10 vitesses, 6 accessoires inclus, bol inox 5L Électroménager",
+    "brand": "CuisineTech",
     "category": "Home",
     "id": 1729794782891
+  },
+  {
+    "name": "Tapis Royal Collection",
+    "price": 149.99,
+    "description": "100% laine, motifs orientaux, 200x300cm, tissage haute densité Décoration",
+    "brand": "DécoArt ",
+    "category": "Home",
+    "id": 1729798948713
+  },
+  {
+    "name": "Table Basse Scandinave",
+    "price": 189.99,
+    "description": "Plateau chêne massif, pieds métal noir, 120x60cm Mobilier",
+    "brand": "ModernHome ",
+    "category": "Home",
+    "id": 1729798970306
   }
 ]

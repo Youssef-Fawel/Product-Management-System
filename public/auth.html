@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+:root {
+    --primary-color: #007BFF;
+    --gradient-primary: linear-gradient(135deg, #007BFF, #0056b3);
+    --container-bg: #ffffff;
+    --text-color: #2c3e50;
+    --input-bg: #f8fafc;
+    --border-color: #e1e8ed;
+    --error-color: #dc3545;
+    --success-color: #28a745;
+    --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f6f8fd 0%, #e9f0f8 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+}
+
+.auth-container {
+    background: var(--container-bg);
+    padding: 40px 50px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+.form-container {
+    position: relative;
+    min-height: auto;
+    height: auto;
+}
+
+.login-form, .signup-form {
+    position: relative; 
+    width: 100%;
+    transition: transform 0.6s ease-in-out, opacity 0.5s ease-in-out;
+    transform-origin: right center;
+}
+
+.signup-form {
+    display: none;
+}
+
+.form-container.show-signup .signup-form {
+    display: block;
+}
+
+.form-container.show-signup .login-form {
+    display: none;
+}
+
+
+h1 {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 35px;
+    font-size: 28px;
+    position: relative;
+}
+
+h1:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 3px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.form-group i {
+    position: absolute;
+    right: 15px;
+    top: 42px;
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 15px;
+    background-color: var(--input-bg);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.toggle-form {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.toggle-form a {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.toggle-form a:hover {
+    background: rgba(0, 123, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.alert {
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: none;
+    font-weight: 500;
+}
+
+.alert.error {
+    background-color: #fff5f5;
+    color: var(--error-color);
+    border: 1px solid #fed7d7;
+}
+
+.alert.success {
+    background-color: #f0fff4;
+    color: var(--success-color);
+    border: 1px solid #c6f6d5;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div id="alert" class="alert"></div>
+        <div class="form-container">
+            <div class="login-form">
+                <h1>Connexion</h1>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" required>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Mot de passe</label>
+                        <input type="password" name="password" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <button type="submit">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Se connecter
+                    </button>
+                </form>
+                <div class="toggle-form">
+                    <a onclick="toggleForm()">
+                        <i class="fas fa-user-plus"></i>
+                        Créer un compte
+                    </a>
+                </div>
+            </div>
+
+            <div class="signup-form">
+                <h1>Inscription</h1>
+                <form id="signupForm" onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label>Nom complet</label>
+                        <input type="text" name="fullName" required>
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" required>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Mot de passe</label>
+                        <input type="password" name="password" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmer</label>
+                        <input type="password" name="confirmPassword" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <button type="submit">
+                        <i class="fas fa-user-plus"></i>
+                        S'inscrire
+                    </button>
+                </form>
+                <div class="toggle-form">
+                    <a onclick="toggleForm()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Déjà inscrit? Se connecter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert ${type}`;
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        function toggleForm() {
+    const formContainer = document.querySelector('.form-container');
+    formContainer.classList.toggle('show-signup');
+    
+    document.getElementById('loginForm').reset();
+    document.getElementById('signupForm').reset();
+    document.getElementById('alert').style.display = 'none';
+}
+
+async function handleSignup(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    
+    const emailResponse = await fetch('/api/auth/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.get('email').toLowerCase() })
+    });
+    
+    if (!emailResponse.ok) {
+        showAlert('Cet email ou nom est déjà utilisé', 'error');
+        return;
+    }
+    
+    const nameResponse = await fetch('/api/auth/check-name', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullName: formData.get('fullName').trim() })
+    });
+    
+    if (!nameResponse.ok) {
+        showAlert('Ce nom est déjà utilisé', 'error');
+        return;
+    }
+
+    if (formData.get('password') !== formData.get('confirmPassword')) {
+        showAlert('Les mots de passe ne correspondent pas', 'error');
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.get('email'))) {
+        showAlert('Format d\'email invalide', 'error');
+        return;
+    }
+
+    const fullName = formData.get('fullName').trim();
+    if (fullName.split(' ').length < 2) {
+        showAlert('Veuillez entrer votre nom complet', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                fullName: fullName,
+                email: formData.get('email').toLowerCase(),
+                password: formData.get('password')
+            })
+        });
+
+        const data = await response.json();
+        
+        if (response.ok) {
+            showAlert('Compte créé avec succès!', 'success');
+            setTimeout(() => {
+                toggleForm();
+                event.target.reset();
+            }, 1500);
+        } else {
+            showAlert(data.message, 'error');
+        }
+    } catch (error) {
+        showAlert('Erreur de connexion au serveur', 'error');
+    }
+}
+
+
+
+
+async function handleLogin(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    
+    try {
+        console.log('Attempting login...'); 
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: formData.get('email'),
+                password: formData.get('password')
+            })
+        });
+        console.log('Server response:', response.status); 
+
+        const data = await response.json();
+        console.log('Response data:', data); 
+
+        if (response.ok) {
+            localStorage.setItem('token', data.token);
+            window.location.href = '/products';
+        } else {
+            showAlert(data.message || 'Email ou mot de passe incorrect', 'error');
+        }
+    } catch (error) {
+        console.error('Connection error:', error); 
+        showAlert('Erreur de connexion au serveur', 'error');
+    }
+}
+
+    </script>
+</body>
+</html>

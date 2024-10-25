@@ -192,15 +192,15 @@
         }
 
         .edit-form {
-        display: grid;
-        gap: 15px;
-        padding: 25px;
-        background: var(--input-bg);
-        border-radius: 12px;
-        margin: 10px 0;
-        width: 95%;  
-        margin-right: auto;  
-        }
+    display: grid;
+    gap: 15px;
+    padding: 25px;
+    background: var(--input-bg);
+    border-radius: 12px;
+    margin: 10px 0;
+    width: 95%;  
+    margin-right: auto;  
+}
 
         .edit-form input,
         .edit-form textarea,
@@ -235,9 +235,31 @@
         }
 
         .edit-form .button-group button[type="submit"] {
-        background: var(--gradient-success);
-        }
+    background: var(--gradient-success);
+}
+.logout-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: var(--danger-color);
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
 
+.logout-btn:hover {
+    transform: scale(1.1);
+}
         @keyframes slideIn {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -262,7 +284,9 @@
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
     </button>
-
+    <button class="logout-btn" onclick="handleLogout()">
+        <i class="fas fa-sign-out-alt"></i>
+    </button>
     <div class="container">
         <h1>Gestion des Produits</h1>
         
@@ -441,48 +465,73 @@
             tr.style.display = 'none';
         }
 
-        async function updateProduct(event, id) {
-            event.preventDefault();
-            const form = event.target;
-            const updatedProduct = {
-                id: id,
-                name: form.name.value,
-                price: parseFloat(form.price.value),
-                brand: form.brand.value,
-                description: form.description.value,
-                category: form.category.value
-            };
-
-            try {
-                const response = await fetch(`/api/products/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(updatedProduct)
-                });
-                
-                if (response.ok) {
-                    await fetchProducts();
-                }
-            } catch (error) {
-                console.log('Error updating product:', error);
+        async function fetchProducts() {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/products', {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             }
+        });
+        const data = await response.json();
+        products = data;
+        displayProducts();
+    } catch (error) {
+        console.log('Error fetching products:', error);
+    }
+}
+
+async function updateProduct(event, id) {
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    const form = event.target;
+    const updatedProduct = {
+        id: id,
+        name: form.name.value,
+        price: parseFloat(form.price.value),
+        brand: form.brand.value,
+        description: form.description.value,
+        category: form.category.value
+    };
+
+    try {
+        const response = await fetch(`/api/products/${id}`, {
+            method: 'PUT',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(updatedProduct)
+        });
+        
+        if (response.ok) {
+            await fetchProducts();
         }
+    } catch (error) {
+        console.log('Error updating product:', error);
+    }
+}
 
-        async function deleteProduct(id) {
-            if (!confirm('Are you sure you want to delete this product?')) return;
+async function deleteProduct(id) {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+    const token = localStorage.getItem('token');
 
-            try {
-                const response = await fetch(`/api/products/${id}`, {
-                    method: 'DELETE'
-                });
-                
-                if (response.ok) {
-                    await fetchProducts();
-                }
-            } catch (error) {
-                console.log('Error deleting product:', error);
+    try {
+        const response = await fetch(`/api/products/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
             }
+        });
+        
+        if (response.ok) {
+            await fetchProducts();
         }
+    } catch (error) {
+        console.log('Error deleting product:', error);
+    }
+}
 
         function applyFilters() {
             currentPage = 1;
@@ -500,7 +549,19 @@
             icon.classList.toggle('fa-sun');
         });
 
-        fetchProducts();
+        document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/';
+        return;
+    }
+    fetchProducts();
+});
+function handleLogout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userName');
+    window.location.href = '/';
+}éé
     </script>
 </body>
 </html>

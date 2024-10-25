@@ -1,131 +1,151 @@
-const http = require('http');
+const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const app = express();
+
+app.use(express.json());
+app.use(express.static('public'));
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') return res.sendStatus(200);
+    next();
+});
 
 const productsFilePath = path.join(__dirname, 'products.json');
+const usersFilePath = path.join(__dirname, 'users.json');
 let products = [];
+let users = [];
 
-function loadProducts() {
+function loadData() {
     try {
-        const data = fs.readFileSync(productsFilePath, 'utf8');
-        products = JSON.parse(data);
+        const productsData = fs.readFileSync(productsFilePath, 'utf8');
+        products = JSON.parse(productsData);
         console.log('Products loaded successfully:', products.length, 'items');
+
+        const usersData = fs.readFileSync(usersFilePath, 'utf8');
+        users = JSON.parse(usersData);
+        console.log('Users loaded successfully:', users.length, 'accounts');
     } catch (error) {
-        products = [];
-        console.log('Starting with empty products array');
+        console.log('Starting with empty arrays');
     }
 }
 
-loadProducts();
+loadData();
 
-const server = http.createServer((req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    if (req.method === 'OPTIONS') {
-        res.writeHead(200);
-        res.end();
-        return;
+const verifyToken = (req, res, next) => {
+    const bearerHeader = req.headers['authorization'];
+    if (!bearerHeader) return res.status(401).json({ message: 'Access denied' });
+    
+    const token = bearerHeader.split(' ')[1];
+    try {
+        const verified = jwt.verify(token, 'your-secret-key');
+        req.user = verified;
+        next();
+    } catch (error) {
+        res.status(401).json({ message: 'Invalid token' });
     }
+};
 
-    if (req.method === 'GET' && req.url === '/') {
-        serveFile('index.html', res);
-    } else if (req.method === 'GET' && req.url === '/products') {
-        serveFile('products.html', res);
-    } else if (req.method === 'GET' && req.url === '/api/products') {
-        handleGetProducts(res);
-    } else if (req.method === 'POST' && req.url === '/api/products') {
-        handleAddProduct(req, res);
-    } else if (req.method === 'PUT' && req.url.startsWith('/api/products/')) {
-        handleUpdateProduct(req, res);
-    } else if (req.method === 'DELETE' && req.url.startsWith('/api/products/')) {
-        handleDeleteProduct(req, res);
-    } else {
-        res.writeHead(404);
-        res.end('Not Found');
+app.get('/products', (req, res) => {
+    res.sendFile(path.join(__dirname, 'products.html'));
+});
+
+app.post('/api/auth/signup', async (req, res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const newUser = {
+            id: Date.now(),
+            fullName: req.body.fullName,
+            email: req.body.email,
+            password: hashedPassword
+        };
+        
+        users.push(newUser);
+        saveUsers();
+        res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+        res.status(400).json({ message: 'Invalid user data' });
     }
 });
 
-function serveFile(filename, res) {
-    fs.readFile(path.join(__dirname, filename), (err, data) => {
-        if (err) {
-            res.writeHead(500);
-            res.end('Server Error');
-            return;
+app.post('/api/auth/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = users.find(u => u.email === email);
+        
+        if (user && await bcrypt.compare(password, user.password)) {
+            const token = jwt.sign({ userId: user.id }, 'your-secret-key', { expiresIn: '24h' });
+            res.json({ token });
+        } else {
+            res.status(401).json({ message: 'Invalid credentials' });
         }
-        const contentType = filename.endsWith('.html') ? 'text/html' : 'text/plain';
-        res.writeHead(200, { 'Content-Type': `${contentType}; charset=utf-8` });
-        res.end(data);
-    });
-}
-
-function handleAddProduct(req, res) {
-    let body = '';
-    req.on('data', chunk => body += chunk);
-    req.on('end', () => {
-        try {
-            const product = JSON.parse(body);
-            product.id = Date.now();
-            products.push(product);
-            saveProducts();
-            res.writeHead(201, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(product));
-        } catch (error) {
-            res.writeHead(400);
-            res.end('Invalid product data');
-        }
-    });
-}
-
-function handleGetProducts(res) {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(products));
-}
-
-function handleUpdateProduct(req, res) {
-    const id = parseInt(req.url.split('/').pop());
-    let body = '';
-    req.on('data', chunk => body += chunk);
-    req.on('end', () => {
-        try {
-            const updatedProduct = JSON.parse(body);
-            const index = products.findIndex(p => p.id === id);
-            if (index === -1) {
-                res.writeHead(404);
-                res.end('Product not found');
-                return;
-            }
-            products[index] = { ...products[index], ...updatedProduct };
-            saveProducts();
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(products[index]));
-        } catch (err) {
-            res.writeHead(400);
-            res.end('Bad Request');
-        }
-    });
-}
-
-function handleDeleteProduct(req, res) {
-    const id = parseInt(req.url.split('/').pop());
-    const index = products.findIndex(p => p.id === id);
-    if (index === -1) {
-        res.writeHead(404);
-        res.end('Product not found');
-        return;
+    } catch (error) {
+        res.status(400).json({ message: 'Bad request' });
     }
+});
+
+app.get('/api/auth/verify', verifyToken, (req, res) => {
+    const user = users.find(u => u.id === req.user.userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json({ email: user.email });
+});
+
+app.get('/api/products', verifyToken, (req, res) => {
+    res.json(products);
+});
+
+app.post('/api/products', verifyToken, (req, res) => {
+    try {
+        const product = {
+            ...req.body,
+            id: Date.now()
+        };
+        products.push(product);
+        saveProducts();
+        res.status(201).json(product);
+    } catch (error) {
+        res.status(400).json({ message: 'Invalid product data' });
+    }
+});
+
+app.put('/api/products/:id', verifyToken, (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const index = products.findIndex(p => p.id === id);
+        if (index === -1) return res.status(404).json({ message: 'Product not found' });
+        
+        products[index] = { ...products[index], ...req.body };
+        saveProducts();
+        res.json(products[index]);
+    } catch (error) {
+        res.status(400).json({ message: 'Bad request' });
+    }
+});
+
+app.delete('/api/products/:id', verifyToken, (req, res) => {
+    const id = parseInt(req.params.id);
+    const index = products.findIndex(p => p.id === id);
+    if (index === -1) return res.status(404).json({ message: 'Product not found' });
+    
     products.splice(index, 1);
     saveProducts();
-    res.writeHead(204);
-    res.end();
-}
+    res.sendStatus(204);
+});
 
 function saveProducts() {
     fs.writeFileSync(productsFilePath, JSON.stringify(products, null, 2));
 }
 
+function saveUsers() {
+    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+}
+
 const PORT = 3000;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });

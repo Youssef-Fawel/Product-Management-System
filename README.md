@@ -1,4 +1,5 @@
 Advanced Product Management System:
+
 A cutting-edge Product Management System featuring a modern interface with intelligent dark mode adaptation. Built for maximum efficiency with comprehensive CRUD operations, advanced filtering, and real-time data management.
 
 Core Features :

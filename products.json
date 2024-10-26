@@ -73,7 +73,7 @@
   },
   {
     "name": "Chaussures running",
-    "price": 75,
+    "price": 75.99,
     "description": "Chaussures de running légères",
     "brand": "SpeedRun",
     "category": "Clothing",
@@ -110,5 +110,53 @@
     "brand": "QuickTab",
     "category": "Electronics",
     "id": 1729799548084
+  },
+  {
+    "name": "La Magie du Matin",
+    "price": 19.5,
+    "description": "Un guide inspirant pour transformer votre vie en adoptant une routine matinale motivante et productive",
+    "brand": "Hal Elrod\t",
+    "category": "Books",
+    "id": 1729948328766
+  },
+  {
+    "name": "La Force de l'Optimisme",
+    "price": 22.99,
+    "description": "Une exploration des bienfaits de l’optimisme sur la santé et le succès, avec des conseils pratiques pour adopter une pensée positive",
+    "brand": "Martin Seligman",
+    "category": "Books",
+    "id": 1729948348024
+  },
+  {
+    "name": "Ordinateur Portatif",
+    "price": 799.99,
+    "description": "\t15.6\" FHD, 256Go SSD, Intel Core i5",
+    "brand": "UltraTech",
+    "category": "Electronics",
+    "id": 1729948395518
+  },
+  {
+    "name": "Télévision 4K UHD",
+    "price": 1099,
+    "description": "Écran 55\", Smart TV, HDR10",
+    "brand": "VisionMax",
+    "category": "Electronics",
+    "id": 1729948423160
+  },
+  {
+    "name": "Casquette unisexe",
+    "price": 14.99,
+    "description": "Casquette en coton, taille ajustable",
+    "brand": "StreetStyle",
+    "category": "Clothing",
+    "id": 1729948472282
+  },
+  {
+    "name": "Jean slim\t",
+    "price": 49.99,
+    "description": "Jean ajusté, coupe moderne, extensible",
+    "brand": "DenimCo",
+    "category": "Clothing",
+    "id": 1729948493892
   }
 ]
